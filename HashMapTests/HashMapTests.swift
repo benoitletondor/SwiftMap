@@ -28,11 +28,97 @@ class HashMapTests: XCTestCase {
         XCTAssertEqual(4059098911, HashMap<String, String>.hash(h: 4294967295))
     }
     
-    /*func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testInit()
+    {
+        let hashMap: HashMap<String, String> = HashMap()
+        XCTAssertEqual(0, hashMap.size())
+        XCTAssertTrue(hashMap.isEmpty())
+    }
+    
+    func testPutGetRemove()
+    {
+        var hashMap: HashMap<String, String> = HashMap()
+        let key:String = "testKey"
+        let val:String = "testValue"
+        
+        hashMap.put(key: key, value: val)
+        
+        XCTAssertEqual(1, hashMap.size())
+        XCTAssertEqual(val, hashMap.get(key: key))
+        
+        let removedVal: String? = hashMap.remove(key: key)
+        XCTAssertNotNil(removedVal)
+        XCTAssertEqual(val, removedVal!)
+        
+        XCTAssertEqual(0, hashMap.size())
+        XCTAssertTrue(hashMap.isEmpty())
+        XCTAssertNil(hashMap.get(key: key))
+    }
+    
+    func testClear()
+    {
+        var hashMap: HashMap<Int, Int> = HashMap()
+        
+        for i in 1...15
+        {
+            hashMap.put(key: i, value: i)
         }
-    }*/
+        
+        XCTAssertEqual(15, hashMap.size())
+        
+        hashMap.clear()
+        
+        XCTAssertEqual(0, hashMap.size())
+        XCTAssertTrue(hashMap.isEmpty())
+    }
+    
+    func testPerformanceInsert()
+    {
+        self.measure
+        {
+            var hashMap: HashMap<Int, Int> = HashMap()
+            
+            for i in 1...1000000
+            {
+                hashMap.put(key: i, value: i)
+            }
+        }
+    }
+    
+    func testPerformanceGet()
+    {
+        var hashMap: HashMap<Int, Int> = HashMap()
+        
+        for i in 1...1000000
+        {
+            hashMap.put(key: i, value: i)
+        }
+        
+        self.measure
+        {
+            for i in 1...1000000
+            {
+                _ = hashMap.get(key: i)
+            }
+        }
+    }
+    
+    func testPerformanceRemove()
+    {
+        var hashMap: HashMap<Int, Int> = HashMap()
+        
+        for i in 1...1000000
+        {
+            hashMap.put(key: i, value: i)
+        }
+        
+        self.measure
+        {
+            for i in 1...1000000
+            {
+                hashMap.remove(key: i)
+            }
+        }
+    }
     
 }

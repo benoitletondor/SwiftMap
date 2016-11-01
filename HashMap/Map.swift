@@ -20,9 +20,9 @@ public protocol Map: Hashable
     func get(key: KeyType) -> ValueType?
     func isEmpty() -> Bool
     func keySet()-> Set<KeyType>
-    mutating func put(key: KeyType, value: ValueType) -> ValueType?
+    @discardableResult mutating func put(key: KeyType, value: ValueType) -> ValueType?
     mutating func putAll(map: Self)
-    mutating func remove(key: KeyType) -> ValueType?
+    @discardableResult mutating func remove(key: KeyType) -> ValueType?
     func size() -> Int
     func values() -> [ValueType]
 }
