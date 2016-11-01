@@ -85,12 +85,44 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     
     public func containsValue(value: ValueType) -> Bool
     {
+        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
+        for entry:HashMapEntry<KeyType, ValueType>? in tab
+        {
+            var currentEntry = entry
+            while let e = currentEntry
+            {
+                if( e.value == value )
+                {
+                    return true
+                }
+                
+                currentEntry = e.next
+            }
+        }
+        
         return false
     }
     
     public func entrySet() -> Set<MapEntry<KeyType, ValueType>>
     {
-        return Set()
+        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
+        var set: Set<MapEntry<KeyType, ValueType>> = Set()
+        
+        for entry: HashMapEntry<KeyType, ValueType>? in tab
+        {
+            var currentEntry = entry
+            while let e = currentEntry
+            {
+                if( e.value != nil )
+                {
+                    set.insert(e)
+                }
+                
+                currentEntry = e.next
+            }
+        }
+        
+        return set
     }
     
     public func get(key: KeyType) -> ValueType?
@@ -118,7 +150,24 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     
     public func keySet()-> Set<KeyType>
     {
-        return Set()
+        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
+        var set: Set<KeyType> = Set()
+        
+        for entry: HashMapEntry<KeyType, ValueType>? in tab
+        {
+            var currentEntry = entry
+            while let e = currentEntry
+            {
+                if( e.value != nil )
+                {
+                    set.insert(e.key)
+                }
+                
+                currentEntry = e.next
+            }
+        }
+        
+        return set
     }
     
     @discardableResult
@@ -236,7 +285,15 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     
     public func values() -> [ValueType]
     {
-        return []
+        let entries: Set<MapEntry<KeyType, ValueType>> = entrySet()
+        var values: [ValueType] = [ValueType]()
+        
+        for entry:MapEntry<KeyType, ValueType> in entries
+        {
+            values.append(entry.value!)
+        }
+        
+        return values
     }
     
     public static func ==(lhs: HashMap, rhs: HashMap) -> Bool
