@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		142F48E31DC8B086002801DD /* HashMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142F48D91DC8B086002801DD /* HashMap.framework */; };
 		142F48E81DC8B086002801DD /* HashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48E71DC8B086002801DD /* HashMapTests.swift */; };
-		142F48EA1DC8B086002801DD /* HashMap.h in Headers */ = {isa = PBXBuildFile; fileRef = 142F48DC1DC8B086002801DD /* HashMap.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		142F48F41DC8B0EA002801DD /* HashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48F31DC8B0EA002801DD /* HashMap.swift */; };
 		142F48F61DC8B0FD002801DD /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48F51DC8B0FD002801DD /* Map.swift */; };
 /* End PBXBuildFile section */
@@ -26,7 +25,6 @@
 
 /* Begin PBXFileReference section */
 		142F48D91DC8B086002801DD /* HashMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HashMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		142F48DC1DC8B086002801DD /* HashMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HashMap.h; sourceTree = "<group>"; };
 		142F48DD1DC8B086002801DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		142F48E21DC8B086002801DD /* HashMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HashMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		142F48E71DC8B086002801DD /* HashMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashMapTests.swift; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 		142F48DB1DC8B086002801DD /* HashMap */ = {
 			isa = PBXGroup;
 			children = (
-				142F48DC1DC8B086002801DD /* HashMap.h */,
 				142F48DD1DC8B086002801DD /* Info.plist */,
 				142F48F31DC8B0EA002801DD /* HashMap.swift */,
 				142F48F51DC8B0FD002801DD /* Map.swift */,
@@ -99,7 +96,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				142F48EA1DC8B086002801DD /* HashMap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +404,7 @@
 				142F48EF1DC8B086002801DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		142F48F01DC8B086002801DD /* Build configuration list for PBXNativeTarget "HashMapTests" */ = {
 			isa = XCConfigurationList;
@@ -416,6 +413,7 @@
 				142F48F21DC8B086002801DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

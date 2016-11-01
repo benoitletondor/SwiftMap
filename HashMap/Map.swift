@@ -13,28 +13,28 @@ public protocol Map: Hashable
     associatedtype KeyType: Hashable
     associatedtype ValueType: Hashable
     
-    func clear()
+    mutating func clear()
     func containsKey(key: KeyType) -> Bool
     func containsValue(value: ValueType) -> Bool
     func entrySet() -> Set<MapEntry<KeyType, ValueType>>
     func get(key: KeyType) -> ValueType?
     func isEmpty() -> Bool
     func keySet()-> Set<KeyType>
-    func put(key: KeyType, value: ValueType) -> ValueType?
-    func putAll(map: Self)
-    func remove(key: KeyType) -> ValueType?
+    mutating func put(key: KeyType, value: ValueType) -> ValueType?
+    mutating func putAll(map: Self)
+    mutating func remove(key: KeyType) -> ValueType?
     func size() -> Int
     func values() -> [ValueType]
 }
 
-public struct MapEntry<K: Hashable, V: Hashable>: Hashable
+public class MapEntry<K: Hashable, V: Hashable>: Hashable
 {
     public let key: K
     public var value: V?
     
     public init(key: K, value: V?)
     {
-        self.key = key;
+        self.key = key
         self.value = value
     }
 
@@ -46,7 +46,7 @@ public struct MapEntry<K: Hashable, V: Hashable>: Hashable
         }
         else
         {
-            return key.hashValue
+            return key.hashValue ^ 0
         }
     }
     
