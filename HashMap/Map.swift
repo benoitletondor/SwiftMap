@@ -1,6 +1,6 @@
 //
 //  Map.swift
-//  HashMap
+//  SwiftMap
 //
 //  Created by Benoit Letondor on 01/11/2016.
 //  Copyright © 2016 Benoit Letondor. All rights reserved.

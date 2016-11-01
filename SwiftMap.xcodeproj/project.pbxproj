@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		142F48E31DC8B086002801DD /* HashMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142F48D91DC8B086002801DD /* HashMap.framework */; };
+		142F48E31DC8B086002801DD /* SwiftMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 142F48D91DC8B086002801DD /* SwiftMap.framework */; };
 		142F48E81DC8B086002801DD /* HashMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48E71DC8B086002801DD /* HashMapTests.swift */; };
 		142F48F41DC8B0EA002801DD /* HashMap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48F31DC8B0EA002801DD /* HashMap.swift */; };
 		142F48F61DC8B0FD002801DD /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 142F48F51DC8B0FD002801DD /* Map.swift */; };
@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		142F48D91DC8B086002801DD /* HashMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = HashMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		142F48D91DC8B086002801DD /* SwiftMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		142F48DD1DC8B086002801DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		142F48E21DC8B086002801DD /* HashMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HashMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		142F48E21DC8B086002801DD /* SwiftMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		142F48E71DC8B086002801DD /* HashMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashMapTests.swift; sourceTree = "<group>"; };
 		142F48E91DC8B086002801DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		142F48F31DC8B0EA002801DD /* HashMap.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashMap.swift; sourceTree = "<group>"; };
@@ -45,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				142F48E31DC8B086002801DD /* HashMap.framework in Frameworks */,
+				142F48E31DC8B086002801DD /* SwiftMap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,8 +64,8 @@
 		142F48DA1DC8B086002801DD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				142F48D91DC8B086002801DD /* HashMap.framework */,
-				142F48E21DC8B086002801DD /* HashMapTests.xctest */,
+				142F48D91DC8B086002801DD /* SwiftMap.framework */,
+				142F48E21DC8B086002801DD /* SwiftMapTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,9 +102,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		142F48D81DC8B086002801DD /* HashMap */ = {
+		142F48D81DC8B086002801DD /* SwiftMap */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 142F48ED1DC8B086002801DD /* Build configuration list for PBXNativeTarget "HashMap" */;
+			buildConfigurationList = 142F48ED1DC8B086002801DD /* Build configuration list for PBXNativeTarget "SwiftMap" */;
 			buildPhases = (
 				142F48D41DC8B086002801DD /* Sources */,
 				142F48D51DC8B086002801DD /* Frameworks */,
@@ -115,14 +115,14 @@
 			);
 			dependencies = (
 			);
-			name = HashMap;
+			name = SwiftMap;
 			productName = HashMap;
-			productReference = 142F48D91DC8B086002801DD /* HashMap.framework */;
+			productReference = 142F48D91DC8B086002801DD /* SwiftMap.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		142F48E11DC8B086002801DD /* HashMapTests */ = {
+		142F48E11DC8B086002801DD /* SwiftMapTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 142F48F01DC8B086002801DD /* Build configuration list for PBXNativeTarget "HashMapTests" */;
+			buildConfigurationList = 142F48F01DC8B086002801DD /* Build configuration list for PBXNativeTarget "SwiftMapTests" */;
 			buildPhases = (
 				142F48DE1DC8B086002801DD /* Sources */,
 				142F48DF1DC8B086002801DD /* Frameworks */,
@@ -133,9 +133,9 @@
 			dependencies = (
 				142F48E51DC8B086002801DD /* PBXTargetDependency */,
 			);
-			name = HashMapTests;
+			name = SwiftMapTests;
 			productName = HashMapTests;
-			productReference = 142F48E21DC8B086002801DD /* HashMapTests.xctest */;
+			productReference = 142F48E21DC8B086002801DD /* SwiftMapTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -159,7 +159,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 142F48D31DC8B086002801DD /* Build configuration list for PBXProject "HashMap" */;
+			buildConfigurationList = 142F48D31DC8B086002801DD /* Build configuration list for PBXProject "SwiftMap" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -171,8 +171,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				142F48D81DC8B086002801DD /* HashMap */,
-				142F48E11DC8B086002801DD /* HashMapTests */,
+				142F48D81DC8B086002801DD /* SwiftMap */,
+				142F48E11DC8B086002801DD /* SwiftMapTests */,
 			);
 		};
 /* End PBXProject section */
@@ -217,7 +217,7 @@
 /* Begin PBXTargetDependency section */
 		142F48E51DC8B086002801DD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 142F48D81DC8B086002801DD /* HashMap */;
+			target = 142F48D81DC8B086002801DD /* SwiftMap */;
 			targetProxy = 142F48E41DC8B086002801DD /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -388,7 +388,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		142F48D31DC8B086002801DD /* Build configuration list for PBXProject "HashMap" */ = {
+		142F48D31DC8B086002801DD /* Build configuration list for PBXProject "SwiftMap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				142F48EB1DC8B086002801DD /* Debug */,
@@ -397,7 +397,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		142F48ED1DC8B086002801DD /* Build configuration list for PBXNativeTarget "HashMap" */ = {
+		142F48ED1DC8B086002801DD /* Build configuration list for PBXNativeTarget "SwiftMap" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				142F48EE1DC8B086002801DD /* Debug */,
@@ -406,7 +406,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		142F48F01DC8B086002801DD /* Build configuration list for PBXNativeTarget "HashMapTests" */ = {
+		142F48F01DC8B086002801DD /* Build configuration list for PBXNativeTarget "SwiftMapTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				142F48F11DC8B086002801DD /* Debug */,

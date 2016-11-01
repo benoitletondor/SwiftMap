@@ -1,13 +1,13 @@
 //
 //  HashMapTests.swift
-//  HashMapTests
+//  SwiftMapTests
 //
 //  Created by Benoit Letondor on 01/11/2016.
 //  Copyright © 2016 Benoit Letondor. All rights reserved.
 //
 
 import XCTest
-@testable import HashMap
+@testable import SwiftMap
 
 class HashMapTests: XCTestCase {
     
