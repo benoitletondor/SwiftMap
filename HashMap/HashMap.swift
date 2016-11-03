@@ -8,21 +8,12 @@
 
 import Foundation
 
-public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
+public class HashMap<Key: Hashable, Value: Hashable> : Map
 {
-    /**
-     The maximum capacity, used if a higher value is implicitly specified
-     by either of the constructors with arguments.
-     MUST be a power of two <= 1<<30.
-     */
-    private let MAXIMUM_CAPACITY: Int = 1 << 30
-    
-// MARK: -
-    
     /**
      The table, resized as necessary. Length MUST Always be a power of two.
      */
-    private var _table: [HashMapEntry<KeyType, ValueType>?]
+    private var _table: [HashMapNode<Key, Value>?]
     
     /**
      The number of key-value mappings contained in this map.
@@ -52,15 +43,15 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         
         self._loadFactor = loadFactor
         self._threshold = Int(Float(capacity) * loadFactor)
-        self._table = [HashMapEntry<KeyType, ValueType>?](repeating: nil, count: capacity)
+        self._table = [HashMapNode<Key, Value>?](repeating: nil, count: capacity)
     }
     
-    public init(initialCapacity: Int)
+    public convenience init(initialCapacity: Int)
     {
         self.init(initialCapacity: initialCapacity, loadFactor: 0.75)
     }
     
-    public init()
+    public convenience init()
     {
         // aka 16
         self.init(initialCapacity: 1 << 4, loadFactor: 0.75)
@@ -68,25 +59,21 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     
 // Mark: -
     
-    public mutating func clear()
+    public func clear()
     {
-        for i in 0...self._table.count - 1
-        {
-            self._table[i] = nil
-        }
-        
+        self._table.removeAll(keepingCapacity: true)
         self._size = 0
     }
     
-    public func containsKey(key: KeyType) -> Bool
+    public func containsKey(_ key: Key) -> Bool
     {
-        return get(key: key) != nil;
+        return get(key) != nil;
     }
     
-    public func containsValue(value: ValueType) -> Bool
+    public func containsValue(_ value: Value) -> Bool
     {
-        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
-        for entry:HashMapEntry<KeyType, ValueType>? in tab
+        let tab: [HashMapNode<Key, Value>?] = self._table
+        for entry:HashMapNode<Key, Value>? in tab
         {
             var currentEntry = entry
             while let e = currentEntry
@@ -103,19 +90,19 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return false
     }
     
-    public func entrySet() -> Set<MapEntry<KeyType, ValueType>>
+    public var entrySet: Set<MapEntry<Key, Value>>
     {
-        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
-        var set: Set<MapEntry<KeyType, ValueType>> = Set()
+        let tab: [HashMapNode<Key, Value>?] = self._table
+        var set: Set<MapEntry<Key, Value>> = Set()
         
-        for entry: HashMapEntry<KeyType, ValueType>? in tab
+        for entry: HashMapNode<Key, Value>? in tab
         {
             var currentEntry = entry
             while let e = currentEntry
             {
-                if( e.value != nil )
+                if let value: Value = e.value
                 {
-                    set.insert(e)
+                    set.insert(MapEntry<Key, Value>(key: e.key, value: value))
                 }
                 
                 currentEntry = e.next
@@ -125,11 +112,11 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return set
     }
     
-    public func get(key: KeyType) -> ValueType?
+    public func get(_ key: Key) -> Value?
     {
-        let hash: Int = HashMap.hash(h: key.hashValue);
+        let hash: Int = HashMap.hash(key.hashValue);
         
-        var entry:HashMapEntry<KeyType, ValueType>? = self._table[HashMap.indexFor(h: hash, length: self._table.count)]
+        var entry:HashMapNode<Key, Value>? = self._table[HashMap.indexFor(h: hash, length: self._table.count)]
         while let e = entry
         {
             if( e.hash == hash && e.key == key )
@@ -143,17 +130,12 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return nil
     }
     
-    public func isEmpty() -> Bool
+    public var keySet: Set<Key>
     {
-        return self._size == 0
-    }
-    
-    public func keySet()-> Set<KeyType>
-    {
-        let tab: [HashMapEntry<KeyType, ValueType>?] = self._table
-        var set: Set<KeyType> = Set()
+        let tab: [HashMapNode<Key, Value>?] = self._table
+        var set: Set<Key> = Set()
         
-        for entry: HashMapEntry<KeyType, ValueType>? in tab
+        for entry: HashMapNode<Key, Value>? in tab
         {
             var currentEntry = entry
             while let e = currentEntry
@@ -171,17 +153,17 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     }
     
     @discardableResult
-    public mutating func put(key: KeyType, value: ValueType) -> ValueType?
+    public func put(key: Key, value: Value) -> Value?
     {
-        let hash: Int = HashMap.hash(h: key.hashValue)
+        let hash: Int = HashMap.hash(key.hashValue)
         let index: Int = HashMap.indexFor(h: hash, length: self._table.count)
         
-        var entry:HashMapEntry<KeyType, ValueType>? = self._table[index]
+        var entry:HashMapNode<Key, Value>? = self._table[index]
         while let e = entry
         {
             if( e.hash == hash && e.key == key )
             {
-                let oldValue: ValueType? = e.value
+                let oldValue: Value? = e.value
                 e.value = value
                 return oldValue
             }
@@ -189,8 +171,8 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
             entry = e.next
         }
         
-        let e:HashMapEntry<KeyType, ValueType>? = self._table[index]
-        self._table[index] = HashMapEntry(key: key, value: value, hash: hash, next: e)
+        let e:HashMapNode<Key, Value>? = self._table[index]
+        self._table[index] = HashMapNode(key: key, value: value, hash: hash, next: e)
         
         self._size+=1
         if (self._size >= self._threshold)
@@ -201,12 +183,12 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return nil
     }
     
-    private mutating func resize(newSize: Int)
+    private func resize(newSize: Int)
     {
-        let oldTable: [HashMapEntry<KeyType, ValueType>?] = self._table
+        let oldTable: [HashMapNode<Key, Value>?] = self._table
         let oldSize = oldTable.count
         
-        if( oldSize == MAXIMUM_CAPACITY )
+        if( oldSize == HashMapConstants.MAXIMUM_CAPACITY )
         {
             self._threshold = Int.max
             return
@@ -216,11 +198,11 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         self._threshold = Int(Float(newSize) * self._loadFactor)
     }
     
-    private func createNewTable(newSize: Int) -> [HashMapEntry<KeyType, ValueType>?]
+    private func createNewTable(newSize: Int) -> [HashMapNode<Key, Value>?]
     {
-        var newTable: [HashMapEntry<KeyType, ValueType>?] = [HashMapEntry<KeyType, ValueType>?](repeating: nil, count: newSize)
+        var newTable: [HashMapNode<Key, Value>?] = [HashMapNode<Key, Value>?](repeating: nil, count: newSize)
         
-        var src: [HashMapEntry<KeyType, ValueType>?] = self._table
+        var src: [HashMapNode<Key, Value>?] = self._table
         let newSize: Int = newTable.count
         
         for i in 0...src.count - 1
@@ -240,17 +222,12 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return newTable
     }
     
-    public mutating func putAll(map: HashMap<KeyType, ValueType>)
-    {
-        
-    }
-    
     @discardableResult
-    public mutating func remove(key: KeyType) -> ValueType?
+    public func remove(_ key: Key) -> Value?
     {
-        let hash: Int = HashMap.hash(h: key.hashValue)
+        let hash: Int = HashMap.hash(key.hashValue)
         let index: Int = HashMap.indexFor(h: hash, length: self._table.count)
-        var prev: HashMapEntry<KeyType, ValueType>? = self._table[index]
+        var prev: HashMapNode<Key, Value>? = self._table[index]
         var e = prev
         
         while let current = e
@@ -278,19 +255,19 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
         return e?.value
     }
     
-    public func size() -> Int
+    public var size: Int
     {
         return self._size
     }
     
-    public func values() -> [ValueType]
+    public var values: [Value]
     {
-        let entries: Set<MapEntry<KeyType, ValueType>> = entrySet()
-        var values: [ValueType] = [ValueType]()
+        let entries: Set<MapEntry<Key, Value>> = entrySet
+        var values: [Value] = [Value]()
         
-        for entry:MapEntry<KeyType, ValueType> in entries
+        for entry:MapEntry<Key, Value> in entries
         {
-            values.append(entry.value!)
+            values.append(entry.value)
         }
         
         return values
@@ -298,11 +275,24 @@ public struct HashMap<KeyType: Hashable, ValueType: Hashable> : Map
     
     public static func ==(lhs: HashMap, rhs: HashMap) -> Bool
     {
-        return false
+        if( lhs === rhs )
+        {
+            return true
+        }
+        
+        return lhs.entrySet == rhs.entrySet
     }
     
-    public var hashValue: Int {
-        return 0
+    public var hashValue: Int
+    {        
+        var h = 0
+        
+        for entry:MapEntry<Key, Value> in entrySet
+        {
+            h += entry.hashValue
+        }
+        
+        return h
     }
 }
 
@@ -315,7 +305,7 @@ extension HashMap
      otherwise encounter collisions for hashCodes that do not differ
      in lower bits. Note: Null keys always map to hash 0, thus index 0.
      */
-    internal static func hash(h: Int) -> Int
+    internal static func hash(_ h: Int) -> Int
     {
         // This function ensures that hashCodes that differ only by
         // constant multiples at each bit position have a bounded
@@ -333,16 +323,36 @@ extension HashMap
     }
 }
 
-internal class HashMapEntry<K: Hashable, V: Hashable>: MapEntry<K, V>
+private struct HashMapConstants
 {
-    public var next: HashMapEntry<K, V>?
+    /**
+     The maximum capacity, used if a higher value is implicitly specified
+     by either of the constructors with arguments.
+     MUST be a power of two <= 1<<30.
+     */
+    static let MAXIMUM_CAPACITY: Int = 1 << 30
+}
+
+private class HashMapNode<K: Hashable, V: Hashable> : Equatable
+{
+    public let key: K
+    public var value: V?
+    public var next: HashMapNode<K, V>?
     public let hash: Int
     
-    init(key: K, value: V?, hash: Int, next: HashMapEntry<K, V>?)
+    init(key: K, value: V?, hash: Int, next: HashMapNode<K, V>?)
     {
+        self.key = key
+        self.value = value
         self.next = next
         self.hash = hash
-        
-        super.init(key: key, value: value)
+    }
+    
+    public static func ==(lhs: HashMapNode, rhs: HashMapNode) -> Bool
+    {
+        return lhs.key == rhs.key &&
+            lhs.value == rhs.value &&
+            lhs.next == rhs.next &&
+            lhs.hash == rhs.hash
     }
 }
