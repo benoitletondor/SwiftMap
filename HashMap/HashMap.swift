@@ -48,13 +48,12 @@ public class HashMap<Key: Hashable, Value: Hashable> : Map
     
     public convenience init(initialCapacity: Int)
     {
-        self.init(initialCapacity: initialCapacity, loadFactor: 0.75)
+        self.init(initialCapacity: initialCapacity, loadFactor: HashMapConstants.DEFAULT_LOAD_FACTOR)
     }
     
     public convenience init()
     {
-        // aka 16
-        self.init(initialCapacity: 1 << 4, loadFactor: 0.75)
+        self.init(initialCapacity: HashMapConstants.DEFAULT_INITIAL_CAPICITY, loadFactor: HashMapConstants.DEFAULT_LOAD_FACTOR)
     }
     
 // Mark: -
@@ -115,8 +114,9 @@ public class HashMap<Key: Hashable, Value: Hashable> : Map
     public func get(_ key: Key) -> Value?
     {
         let hash: Int = HashMap.hash(key.hashValue);
+        let index: Int = HashMap.indexFor(h: hash, length: self._table.count)
         
-        var entry:HashMapNode<Key, Value>? = self._table[HashMap.indexFor(h: hash, length: self._table.count)]
+        var entry:HashMapNode<Key, Value>? = self._table[index]
         while let e = entry
         {
             if( e.hash == hash && e.key == key )
@@ -153,7 +153,7 @@ public class HashMap<Key: Hashable, Value: Hashable> : Map
     }
     
     @discardableResult
-    public func put(key: Key, value: Value) -> Value?
+    public func put(_ value: Value, forKey key: Key) -> Value?
     {
         let hash: Int = HashMap.hash(key.hashValue)
         let index: Int = HashMap.indexFor(h: hash, length: self._table.count)
@@ -202,20 +202,16 @@ public class HashMap<Key: Hashable, Value: Hashable> : Map
     {
         var newTable: [HashMapNode<Key, Value>?] = [HashMapNode<Key, Value>?](repeating: nil, count: newSize)
         
-        var src: [HashMapNode<Key, Value>?] = self._table
-        let newSize: Int = newTable.count
-        
-        for i in 0...src.count - 1
+        for entry: HashMapNode<Key, Value>? in self._table
         {
-            if let e = src[i]
+            var currentEntry = entry
+            while let e = currentEntry
             {
-                src[i] = nil
-                while let next = e.next
-                {
-                    let index: Int = HashMap.indexFor(h: next.hash, length: newSize)
-                    next.next = newTable[index]
-                    newTable[index] = next
-                }
+                currentEntry = e.next
+                
+                let index: Int = HashMap.indexFor(h: e.hash, length: newSize)
+                e.next = newTable[index]
+                newTable[index] = e
             }
         }
         
@@ -331,6 +327,10 @@ private struct HashMapConstants
      MUST be a power of two <= 1<<30.
      */
     static let MAXIMUM_CAPACITY: Int = 1 << 30
+    
+    static let DEFAULT_LOAD_FACTOR: Float = 0.75
+    
+    static let DEFAULT_INITIAL_CAPICITY: Int = 1 << 4 // = 16
 }
 
 private class HashMapNode<K: Hashable, V: Hashable> : Equatable

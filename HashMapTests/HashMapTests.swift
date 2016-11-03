@@ -33,6 +33,9 @@ class HashMapTests: XCTestCase {
         let map: AnyMap<String, String> = AnyMap(HashMap())
         XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
+        XCTAssertEqual(0, map.entrySet.count)
+        XCTAssertEqual(0, map.keySet.count)
+        XCTAssertEqual(0, map.values.count)
     }
     
     func testPutGetRemove()
@@ -41,10 +44,14 @@ class HashMapTests: XCTestCase {
         let key:String = "testKey"
         let val:String = "testValue"
         
-        map.put(key: key, value: val)
+        map.put(val, forKey: key)
         
         XCTAssertEqual(1, map.size)
+        XCTAssertFalse(map.isEmpty)
         XCTAssertEqual(val, map.get(key))
+        XCTAssertEqual(1, map.entrySet.count)
+        XCTAssertEqual(1, map.keySet.count)
+        XCTAssertEqual(1, map.values.count)
         
         let removedVal: String? = map.remove(key)
         XCTAssertNotNil(removedVal)
@@ -52,7 +59,29 @@ class HashMapTests: XCTestCase {
         
         XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
+        XCTAssertEqual(0, map.entrySet.count)
+        XCTAssertEqual(0, map.keySet.count)
+        XCTAssertEqual(0, map.values.count)
         XCTAssertNil(map.get(key))
+    }
+    
+    func testMassValues()
+    {
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
+        
+        var values: [Int] = [Int](repeating: 0, count: 10000)
+        for i in 0...9999
+        {
+            values[i] = i
+            map.put(i, forKey: i)
+        }
+        
+        XCTAssertEqual(values, map.values.sorted())
+        
+        for (index, value) in values.enumerated()
+        {
+            XCTAssertEqual(value, map.get(index))
+        }
     }
     
     func testClear()
@@ -61,7 +90,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...15
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         XCTAssertEqual(15, map.size)
@@ -70,6 +99,9 @@ class HashMapTests: XCTestCase {
         
         XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
+        XCTAssertEqual(0, map.entrySet.count)
+        XCTAssertEqual(0, map.keySet.count)
+        XCTAssertEqual(0, map.values.count)
     }
     
     func testContainsValue()
@@ -78,7 +110,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -107,7 +139,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -136,7 +168,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -168,7 +200,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -200,7 +232,7 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
+            map.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -216,8 +248,8 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
-            map2.put(key: i, value: i)
+            map.put(i, forKey: i)
+            map2.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -234,8 +266,8 @@ class HashMapTests: XCTestCase {
         
         for i in 1...11
         {
-            map.put(key: i, value: i)
-            map2.put(key: i, value: i)
+            map.put(i, forKey: i)
+            map2.put(i, forKey: i)
         }
         
         map.remove(11)
@@ -243,103 +275,4 @@ class HashMapTests: XCTestCase {
         XCTAssertFalse(map == map2)
         XCTAssertNotEqual(map.hashValue, map2.hashValue)
     }
-    
-    func testDictPerformanceInsert()
-    {
-        var dict = [Int: Int]()
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                dict[i] = i
-            }
-        }
-    }
-    
-    func testMapPerformanceInsert()
-    {
-        let map: AnyMap<Int, Int> = AnyMap(HashMap())
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                map.put(key: i, value: i)
-            }
-        }
-    }
-    
-    func testDictPerformanceGet()
-    {
-        var dict = [Int: Int]()
-        
-        for i in 1...1000000
-        {
-            dict[i] = i
-        }
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                _ = dict[i]
-            }
-        }
-    }
-    
-    func testMapPerformanceGet()
-    {
-        let map: AnyMap<Int, Int> = AnyMap(HashMap())
-        
-        for i in 1...1000000
-        {
-            map.put(key: i, value: i)
-        }
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                _ = map.get(i)
-            }
-        }
-    }
-    
-    func testDictPerformanceRemove()
-    {
-        var dict = [Int: Int]()
-        
-        for i in 1...1000000
-        {
-            dict[i] = i
-        }
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                dict.removeValue(forKey: i)
-            }
-        }
-    }
-    
-    func testMapPerformanceRemove()
-    {
-        let map: AnyMap<Int, Int> = AnyMap(HashMap())
-        
-        for i in 1...1000000
-        {
-            map.put(key: i, value: i)
-        }
-        
-        self.measure
-        {
-            for i in 1...1000000
-            {
-                map.remove(i)
-            }
-        }
-    }
-    
 }

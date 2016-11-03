@@ -19,7 +19,7 @@ public protocol Map: Hashable
     var entrySet: Set<MapEntry<Key, Value>> { get }
     func get(_ key: Key) -> Value?
     var keySet: Set<Key> { get }
-    @discardableResult mutating func put(key: Key, value: Value) -> Value?
+    @discardableResult mutating func put(_ value: Value, forKey key: Key) -> Value?
     @discardableResult mutating func remove(_ key: Key) -> Value?
     var size: Int { get }
     var values: [Value] { get }
@@ -57,7 +57,7 @@ public class AnyMap<K: Hashable, V: Hashable> : Map
         self._entrySet = { copy.entrySet }
         self._get = copy.get
         self._keySet = { copy.keySet }
-        self._put = { (key: K, value: V) in copy.put (key: key, value: value) }
+        self._put = { (key: K, value: V) in copy.put (value, forKey: key) }
         self._remove = { (_ key: K) in return copy.remove(key) }
         self._size = { copy.size }
         self._values = { copy.values }
@@ -95,7 +95,7 @@ public class AnyMap<K: Hashable, V: Hashable> : Map
     }
     
     @discardableResult
-    public func put(key: K, value: V) -> V?
+    public func put(_ value: V, forKey key: K) -> V?
     {
         return _put(key, value)
     }
