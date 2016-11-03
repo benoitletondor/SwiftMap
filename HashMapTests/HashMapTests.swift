@@ -244,7 +244,20 @@ class HashMapTests: XCTestCase {
         XCTAssertNotEqual(map.hashValue, map2.hashValue)
     }
     
-    func testPerformanceInsert()
+    func testDictPerformanceInsert()
+    {
+        var dict = [Int: Int]()
+        
+        self.measure
+        {
+            for i in 1...1000000
+            {
+                dict[i] = i
+            }
+        }
+    }
+    
+    func testMapPerformanceInsert()
     {
         let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
@@ -257,7 +270,25 @@ class HashMapTests: XCTestCase {
         }
     }
     
-    func testPerformanceGet()
+    func testDictPerformanceGet()
+    {
+        var dict = [Int: Int]()
+        
+        for i in 1...1000000
+        {
+            dict[i] = i
+        }
+        
+        self.measure
+        {
+            for i in 1...1000000
+            {
+                _ = dict[i]
+            }
+        }
+    }
+    
+    func testMapPerformanceGet()
     {
         let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
@@ -275,7 +306,25 @@ class HashMapTests: XCTestCase {
         }
     }
     
-    func testPerformanceRemove()
+    func testDictPerformanceRemove()
+    {
+        var dict = [Int: Int]()
+        
+        for i in 1...1000000
+        {
+            dict[i] = i
+        }
+        
+        self.measure
+        {
+            for i in 1...1000000
+            {
+                dict.removeValue(forKey: i)
+            }
+        }
+    }
+    
+    func testMapPerformanceRemove()
     {
         let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
