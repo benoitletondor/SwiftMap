@@ -140,7 +140,7 @@ public struct MapEntry<K: Hashable, V: Hashable>: Hashable
 
     public var hashValue: Int
     {
-        return key.hashValue ^ value.hashValue
+        return key.hashValue + value.hashValue
     }
     
     public static func ==(lhs: MapEntry, rhs: MapEntry) -> Bool

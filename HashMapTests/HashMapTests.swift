@@ -31,50 +31,50 @@ class HashMapTests: XCTestCase {
     func testInit()
     {
         let map: AnyMap<String, String> = AnyMap(HashMap())
-        XCTAssertEqual(0, map.size())
+        XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
     }
     
     func testPutGetRemove()
     {
-        var map: AnyMap<String, String> = AnyMap(HashMap())
+        let map: AnyMap<String, String> = AnyMap(HashMap())
         let key:String = "testKey"
         let val:String = "testValue"
         
         map.put(key: key, value: val)
         
-        XCTAssertEqual(1, map.size())
+        XCTAssertEqual(1, map.size)
         XCTAssertEqual(val, map.get(key))
         
         let removedVal: String? = map.remove(key)
         XCTAssertNotNil(removedVal)
         XCTAssertEqual(val, removedVal!)
         
-        XCTAssertEqual(0, map.size())
+        XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
         XCTAssertNil(map.get(key))
     }
     
     func testClear()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...15
         {
             map.put(key: i, value: i)
         }
         
-        XCTAssertEqual(15, map.size())
+        XCTAssertEqual(15, map.size)
         
         map.clear()
         
-        XCTAssertEqual(0, map.size())
+        XCTAssertEqual(0, map.size)
         XCTAssertTrue(map.isEmpty)
     }
     
     func testContainsValue()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...11
         {
@@ -103,7 +103,7 @@ class HashMapTests: XCTestCase {
     
     func testContainsKey()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...11
         {
@@ -132,7 +132,7 @@ class HashMapTests: XCTestCase {
     
     func testKeySet()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...11
         {
@@ -141,7 +141,7 @@ class HashMapTests: XCTestCase {
         
         map.remove(11)
         
-        let keys: Set<Int> = map.keySet()
+        let keys: Set<Int> = map.keySet
         
         XCTAssertEqual(10, keys.count)
         XCTAssertTrue(keys.contains(1))
@@ -164,7 +164,7 @@ class HashMapTests: XCTestCase {
     
     func testValues()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...11
         {
@@ -196,7 +196,7 @@ class HashMapTests: XCTestCase {
     
     func testEntrySet()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...11
         {
@@ -205,16 +205,51 @@ class HashMapTests: XCTestCase {
         
         map.remove(11)
         
-        let entries: Set<MapEntry<Int, Int>> = map.entrySet()
+        let entries: Set<MapEntry<Int, Int>> = map.entrySet
         XCTAssertEqual(10, entries.count)
+    }
+    
+    func testEqual()
+    {
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map2: AnyMap<Int, Int> = AnyMap(HashMap())
+        
+        for i in 1...11
+        {
+            map.put(key: i, value: i)
+            map2.put(key: i, value: i)
+        }
+        
+        map.remove(11)
+        map2.remove(11)
+        
+        XCTAssertTrue(map == map2)
+        XCTAssertEqual(map.hashValue, map2.hashValue)
+    }
+    
+    func testNotEqual()
+    {
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map2: AnyMap<Int, Int> = AnyMap(HashMap())
+        
+        for i in 1...11
+        {
+            map.put(key: i, value: i)
+            map2.put(key: i, value: i)
+        }
+        
+        map.remove(11)
+        
+        XCTAssertFalse(map == map2)
+        XCTAssertNotEqual(map.hashValue, map2.hashValue)
     }
     
     func testPerformanceInsert()
     {
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
+        
         self.measure
         {
-            var map: AnyMap<Int, Int> = AnyMap(HashMap())
-            
             for i in 1...1000000
             {
                 map.put(key: i, value: i)
@@ -224,7 +259,7 @@ class HashMapTests: XCTestCase {
     
     func testPerformanceGet()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...1000000
         {
@@ -242,7 +277,7 @@ class HashMapTests: XCTestCase {
     
     func testPerformanceRemove()
     {
-        var map: AnyMap<Int, Int> = AnyMap(HashMap())
+        let map: AnyMap<Int, Int> = AnyMap(HashMap())
         
         for i in 1...1000000
         {
